@@ -8,7 +8,7 @@ const withPWA = withPWAInit({
 });
 
 const nextConfig = {
-  output: "standalone",
+  // output: "standalone" removed for Hostinger compatibility
 };
 
 module.exports = withPWA(nextConfig);
