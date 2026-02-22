@@ -44,6 +44,9 @@ export async function POST(req: Request) {
             const zErr = error as z.ZodError<any>;
             return NextResponse.json({ message: zErr.issues[0].message }, { status: 400 });
         }
-        return NextResponse.json({ message: "Error interno del servidor" }, { status: 500 });
+
+        // Return exact error message for Hostinger debugging
+        const errorMessage = error instanceof Error ? error.message : "Error interno del servidor";
+        return NextResponse.json({ message: errorMessage }, { status: 500 });
     }
 }
