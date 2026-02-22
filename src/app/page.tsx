@@ -5,7 +5,14 @@ import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
-  const session = await getServerSession(authOptions);
+  let session = null;
+  let authError = null;
+
+  try {
+    session = await getServerSession(authOptions);
+  } catch (error) {
+    authError = error instanceof Error ? error.message : String(error);
+  }
 
   if (session) {
     redirect("/dashboard");
@@ -13,6 +20,13 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      {authError && (
+        <div className="bg-red-500 text-white p-4 text-center text-sm font-bold">
+          Falha Crítica no Servidor: {authError}
+          <br />
+          (Verifique as Variáveis de Ambiente NEXTAUTH_SECRET e DATABASE_URL na Hostinger)
+        </div>
+      )}
       {/* Hero Section */}
       <section className="flex-1 flex flex-col items-center justify-center p-6 text-center space-y-8 bg-gradient-to-b from-blue-50 to-white">
         <div className="space-y-4 max-w-sm">
