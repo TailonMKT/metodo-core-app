@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -19,6 +19,7 @@ export default async function Resultado() {
         redirect("/login");
     }
 
+    const prisma = getPrisma();
     const profile = await prisma.profile.findUnique({
         where: { userId: session.user.id },
     });

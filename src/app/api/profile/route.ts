@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 import { z } from "zod";
 
 const profileSchema = z.object({
@@ -24,6 +24,8 @@ export async function POST(req: Request) {
         // Calculate BMI (IMC): weight (kg) / (height (m))^2
         const heightInMeters = height / 100;
         const bmi = Number((weight / (heightInMeters * heightInMeters)).toFixed(2));
+
+        const prisma = getPrisma();
 
         const profile = await prisma.profile.upsert({
             where: { userId: session.user.id },

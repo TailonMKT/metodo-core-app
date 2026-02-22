@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import DayButton from "@/components/ui/day-button";
 import LogoutButton from "@/components/ui/logout-button";
@@ -13,6 +13,7 @@ export default async function Dashboard() {
     }
 
     const userId = session.user.id;
+    const prisma = getPrisma();
 
     // Obtener perfil de usuario y progresos
     const [profile, progressLogs] = await Promise.all([
